@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.htmlTemplate = void 0;
+function repeat(str, times) {
+    var repeated = '';
+    for (var i = 1; i <= times; i++) {
+        repeated += str;
+    }
+    return repeated;
+}
+exports.htmlTemplate = "\n<div class=\"simplepicker-wrapper\">\n  <div class=\"simpilepicker-date-picker\">\n    <div class=\"simplepicker-day-header\"></div>\n      <div class=\"simplepicker-date-section\">\n        <div class=\"simplepicker-month-and-year\"></div>\n        <div class=\"simplepicker-date\"></div>\n        <div class=\"simplepicker-select-pane\">\n          <button class=\"simplepicker-icon simplepicker-icon-calender active\" title=\"Select date from calender!\"></button>\n          <div class=\"simplepicker-time\">12:00 PM</div>\n          <button class=\"simplepicker-icon simplepicker-icon-time\" title=\"Select time\"></button>\n        </div>\n      </div>\n      <div class=\"simplepicker-picker-section\">\n        <div class=\"simplepicker-calender-section\">\n          <div class=\"simplepicker-month-switcher simplepicker-select-pane\">\n            <button class=\"simplepicker-icon simplepicker-icon-previous\"></button>\n            <div class=\"simplepicker-selected-date\"></div>\n            <button class=\"simplepicker-icon simplepicker-icon-next\"></button>\n          </div>\n          <div class=\"simplepicker-calender\">\n            <table>\n              <thead>\n                <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>\n              </thead>\n              <tbody>\n                " + repeat('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>', 6) + "\n              </tbody>\n            </table>\n          </div>\n        </div>\n        <div class=\"simplepicker-time-section\">\n          <input type=\"time\" value=\"12:00\" autofocus=\"false\">\n        </div>\n      </div>\n      <div class=\"simplepicker-bottom-part\">\n        <button class=\"simplepicker-cancel-btn simplepicker-btn\" title=\"Cancel\">Cancel</button>\n        <button class=\"simplepicker-ok-btn simplepicker-btn\" title=\"OK\">OK</button>\n      </div>\n  </div>\n</div>\n";

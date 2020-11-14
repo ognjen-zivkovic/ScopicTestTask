@@ -1,0 +1,22 @@
+﻿@using Diplomski.Helpers
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <img alt="image" id="profileImage" class="rounded-circle" src="~/images/profile.jpg" />
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="block m-t-xs font-bold">Admin</span>
+                        <span class="text-muted text-xs block">Application administrator</span>
+                    </a>
+                 
+                </div>
+            </li>
+            <li class="@Html.IsSelected(controller: "Layouts")">
+                <a href="@Url.Action("AntiqueList", "AdminPanelAntiques")"><i class="fa fa-table"></i> <span class="nav-label" data-i18n="nav.layouts">Antiques</span></a>
+            </li>
+-
+        </ul>
+    </div>
+</nav>

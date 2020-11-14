@@ -1,0 +1,41 @@
+﻿@model User
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="~/css/loginForm.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container2"></div>
+    <div class="container-grey"></div>
+
+
+        <div class="col-md-4">
+            <form method="post" class="form">
+                <h4 id="formHeader">Login to you account</h4>
+                <hr id="formHr" />
+                <div class="form-group">
+                    <label asp-for="UserName" class="formLabel"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="formLabel"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-success" id="submitBtn">Login</button>
+            </form>
+        </div>
+
+
+       <script src="~/lib/jquery/dist/jquery.min.js"></script>
+       <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+       <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

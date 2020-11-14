@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminPanel</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Add local styles, mostly for plugins css file -->
+    @if (IsSectionDefined("Styles"))
+    {
+@RenderSection("Styles", required: false)}
+
+    <link rel="stylesheet" href="~/lib/simplepicker-master/dist/simplepicker.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/adminPanelStyle.css" asp-append-version="true" />
+</head>
+<body>
+
+    <!-- Wrapper-->
+    <div id="wrapper" class="@*@Html.PageClass()*@">
+
+        <!-- Sidebar -->
+        <partial name="_Sidebar" />
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            @*<partial name="_TopNavbar" />*@
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            <partial name="_Footer" />
+
+        </div>
+        <!-- End page wrapper-->
+
+
+    </div>
+    <!-- End wrapper-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/simplepicker-master/dist/simplepicker.js"></script>
+  
+    @RenderSection("scripts", required: false)
+</body>
+</html>
