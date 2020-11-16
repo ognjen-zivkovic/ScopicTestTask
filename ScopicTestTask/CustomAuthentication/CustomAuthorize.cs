@@ -24,12 +24,14 @@ namespace ScopicTestTask.CustomAuthentication
             if (AppContext.Current.Session.GetString(Role) == null)
             {
                 context.Result =
-                new RedirectToRouteResult(new RouteValueDictionary
-                         {
-                              { "action", "Login" },
-                            { "controller", "Home" }
-                          });
-                return;
+                 new RedirectToRouteResult(new RouteValueDictionary
+                          {
+                               { "action", "Login" },
+                             { "controller", "Home" }
+                           });
+                 return;
+                //context.Result = new ForbidResult();
+
             }
         }
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
 using ScopicTestTask.Models.DTOs;
@@ -27,6 +28,40 @@ namespace ScopicTestTask.Controllers.API
             _environment = environment;
         }
 
+        //[CustomAuthorize(Role = "admin")]
+        [HttpGet("ClientGetAllAntiques")]
+        public IActionResult ClientGetAllAntiques()
+        {
+            List<Antique> antiques = _context.Antiques.ToList();
+            List<ClientSideAntiquePhotoDTO> dtoList = new List<ClientSideAntiquePhotoDTO>();
+            ClientSideAntiquePhotoDTO temp = null;
+            foreach (Antique antique in antiques)
+            {
+                temp = new ClientSideAntiquePhotoDTO()
+                {
+                    Id = antique.Id,
+                    Name = antique.Name,
+                    Description = antique.Description,
+                    BasePrice = antique.BasePrice,
+                    CurrentBid = antique.CurrentBid
+                };
+                List<string> photoPaths = _context.Photos.Where(p => p.AntiqueId == antique.Id).Select(p => p.Path).ToList();
+                if (photoPaths != null)
+                {
+                    temp.PhotoPaths = new List<string>();
+                    foreach (string path in photoPaths)
+                    {
+                        temp.PhotoPaths.Add(path);
+                    }
+                }
+
+                dtoList.Add(temp);
+            }
+            return Ok(dtoList);
+        }
+
+
+        //[CustomAuthorize(Role = "admin")]
         [HttpGet("GetAllAntiques")]
         public IActionResult GetAllAntiques()
         {
@@ -35,15 +70,16 @@ namespace ScopicTestTask.Controllers.API
             AntiquePhotoDTO temp = null;
             foreach (Antique antique in antiques)
             {
-                temp = new AntiquePhotoDTO(){
-                Id = antique.Id,
-                Name = antique.Name,
-                PhotoPath = _context.Photos.Where(p=>p.AntiqueId == antique.Id).Select(p=>p.Path).Take(1).SingleOrDefault(),
-                Description = antique.Description,
-                BasePrice = antique.BasePrice,
-                CurrentBid = antique.CurrentBid,
-                BidStartTime = antique.BidStartTime,
-                BidEndTime = antique.BidEndTime
+                temp = new AntiquePhotoDTO()
+                {
+                    Id = antique.Id,
+                    Name = antique.Name,
+                    PhotoPath = _context.Photos.Where(p => p.AntiqueId == antique.Id).Select(p => p.Path).Take(1).SingleOrDefault(),
+                    Description = antique.Description,
+                    BasePrice = antique.BasePrice,
+                    CurrentBid = antique.CurrentBid,
+                    BidStartTime = antique.BidStartTime,
+                    BidEndTime = antique.BidEndTime
                 };
                 dtoList.Add(temp);
             }

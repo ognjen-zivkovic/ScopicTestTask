@@ -31,18 +31,25 @@ namespace ScopicTestTask.Controllers
 
             HttpContext.Session.Clear();
             CustomAuthentication.CustomAuthorize.SetSession(user);
-            if (user.UserName == "admin")
+            if (user.UserName == "admin" && user.Password == "admin")
             {
-                return RedirectToAction("AntiqueList","AdminPanelAntiques");
+                return RedirectToAction("AntiqueList", "AdminPanelAntiques");
             }
-
+            else if(user.UserName == "user" && user.Password == "user")
+            {
+                return View("Index");
+            }
             return View();
         }
         //  [CustomAuthorize(Role = "user")]
         public IActionResult Index()
         {
-
             return View();
+        }
+
+        public IActionResult ItemDetails([FromQuery(Name = "antiqueId")] string antiqueId)
+        {
+            return View(antiqueId);
         }
 
         public IActionResult Privacy()
