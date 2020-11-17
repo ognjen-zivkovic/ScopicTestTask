@@ -62,6 +62,7 @@ namespace ScopicTestTask.Data
                 entity.ToTable("BidHistory");
 
                 entity.Property(e => e.BidTime).HasColumnType("datetime");
+                entity.Property(e => e.BidAmount).HasColumnType("numeric(13, 0)");
 
                 entity.HasOne(d => d.Antique)
                     .WithMany(p => p.BidHistories)

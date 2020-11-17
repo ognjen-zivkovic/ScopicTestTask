@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
-using ScopicTestTask.Models.DTOs;
+using ScopicTestTask.Models.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

@@ -9,8 +9,10 @@ namespace ScopicTestTask.Models
     {
         public int Id { get; set; }
         public DateTime BidTime { get; set; }
+        public decimal BidAmount { get; set; }
         public int AntiqueId { get; set; }
 
+        public string User { get; set; }
         public virtual Antique Antique { get; set; }
     }
 }

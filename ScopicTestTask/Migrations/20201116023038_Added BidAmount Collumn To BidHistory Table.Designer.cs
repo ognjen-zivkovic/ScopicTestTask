@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScopicTestTask.Data;
 
 namespace ScopicTestTask.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201116023038_Added BidAmount Collumn To BidHistory Table")]
+    partial class AddedBidAmountCollumnToBidHistoryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +72,6 @@ namespace ScopicTestTask.Migrations
 
                     b.Property<DateTime>("BidTime")
                         .HasColumnType("datetime");
-
-                    b.Property<string>("User")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

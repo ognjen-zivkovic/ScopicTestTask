@@ -12,7 +12,7 @@ namespace ScopicTestTask.Controllers
     {
         public HomeController()
         {
-            
+
         }
 
         public IActionResult Login()
@@ -35,7 +35,11 @@ namespace ScopicTestTask.Controllers
             {
                 return RedirectToAction("AntiqueList", "AdminPanelAntiques");
             }
-            else if(user.UserName == "user" && user.Password == "user")
+            else if (user.UserName == "user" && user.Password == "user")
+            {
+                return View("Index");
+            }
+            else if (user.UserName == "user2" && user.Password == "user2")
             {
                 return View("Index");
             }
@@ -47,7 +51,7 @@ namespace ScopicTestTask.Controllers
             return View();
         }
 
-        public IActionResult ItemDetails([FromQuery(Name = "antiqueId")] string antiqueId)
+        public IActionResult ItemDetails([FromQuery(Name = "antiqueId")] int antiqueId)
         {
             return View(antiqueId);
         }

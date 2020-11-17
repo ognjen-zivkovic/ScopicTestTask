@@ -12,10 +12,10 @@ namespace ScopicTestTask.CustomAuthentication
         public string Role { get; set; }
         public static void SetSession(User user)
         {
-            if (user.UserName == "admin" && user.Password == "admin")
-                AppContext.Current.Session.SetString(user.UserName, user.Password);
-            else if (user.UserName == "user" && user.Password == "user")
-                AppContext.Current.Session.SetString(user.UserName, user.Password);
+            if (user.UserName == "admin")
+                AppContext.Current.Session.SetString("admin", user.UserName);
+            else
+                AppContext.Current.Session.SetString("user", user.UserName);
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -29,7 +29,7 @@ namespace ScopicTestTask.CustomAuthentication
                                { "action", "Login" },
                              { "controller", "Home" }
                            });
-                 return;
+                return;
                 //context.Result = new ForbidResult();
 
             }

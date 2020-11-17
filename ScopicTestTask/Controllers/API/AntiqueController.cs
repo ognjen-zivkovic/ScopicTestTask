@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
-using ScopicTestTask.Models.DTOs;
+using ScopicTestTask.Models.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,6 +26,24 @@ namespace ScopicTestTask.Controllers.API
         {
             _context = context;
             _environment = environment;
+        }
+
+
+
+
+        [HttpGet("ClientGetAntiqueById/{id}")]
+        public IActionResult ClientGetAntiqueById(int id)
+        {
+            Antique antique = _context.Antiques.Where(a=>a.Id == id).SingleOrDefault();
+            ClientSideAntiquePhotoDTO model = new ClientSideAntiquePhotoDTO();
+            model.Id = antique.Id;
+            model.Name = antique.Name;
+            model.Description = antique.Description;
+            model.BasePrice = antique.BasePrice;
+            model.CurrentBid = antique.CurrentBid;
+            model.BidEnd = antique.BidEndTime;
+            model.PhotoPaths = _context.Photos.Where(p => p.AntiqueId == antique.Id).Select(p => p.Path).ToList();
+            return Ok(model);
         }
 
         //[CustomAuthorize(Role = "admin")]
