@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
 using ScopicTestTask.Models.ViewModels;
@@ -28,14 +25,11 @@ namespace ScopicTestTask.Controllers.API
             _environment = environment;
         }
 
-
-
-
         [HttpGet("ClientGetAntiqueById/{id}")]
         public IActionResult ClientGetAntiqueById(int id)
         {
-            Antique antique = _context.Antiques.Where(a=>a.Id == id).SingleOrDefault();
-            ClientSideAntiquePhotoDTO model = new ClientSideAntiquePhotoDTO();
+            Antique antique = _context.Antiques.Where(a => a.Id == id).SingleOrDefault();
+            HomePageViewModel model = new HomePageViewModel();
             model.Id = antique.Id;
             model.Name = antique.Name;
             model.Description = antique.Description;
@@ -50,12 +44,13 @@ namespace ScopicTestTask.Controllers.API
         [HttpGet("ClientGetAllAntiques")]
         public IActionResult ClientGetAllAntiques()
         {
-            List<Antique> antiques = _context.Antiques.ToList();
-            List<ClientSideAntiquePhotoDTO> dtoList = new List<ClientSideAntiquePhotoDTO>();
-            ClientSideAntiquePhotoDTO temp = null;
+            DateTime localDate = DateTime.Now;
+            List<Antique> antiques = _context.Antiques.Where(a => a.BidStartTime <= localDate).ToList();
+            List<HomePageViewModel> dtoList = new List<HomePageViewModel>();
+            HomePageViewModel temp = null;
             foreach (Antique antique in antiques)
             {
-                temp = new ClientSideAntiquePhotoDTO()
+                temp = new HomePageViewModel()
                 {
                     Id = antique.Id,
                     Name = antique.Name,
@@ -84,11 +79,11 @@ namespace ScopicTestTask.Controllers.API
         public IActionResult GetAllAntiques()
         {
             List<Antique> antiques = _context.Antiques.ToList();
-            List<AntiquePhotoDTO> dtoList = new List<AntiquePhotoDTO>();
-            AntiquePhotoDTO temp = null;
+            List<AntiquePhotoViewModel> dtoList = new List<AntiquePhotoViewModel>();
+            AntiquePhotoViewModel temp = null;
             foreach (Antique antique in antiques)
             {
-                temp = new AntiquePhotoDTO()
+                temp = new AntiquePhotoViewModel()
                 {
                     Id = antique.Id,
                     Name = antique.Name,
@@ -166,6 +161,5 @@ namespace ScopicTestTask.Controllers.API
 
             return Ok();
         }
-
     }
 }

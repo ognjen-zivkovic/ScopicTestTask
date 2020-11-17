@@ -50,8 +50,9 @@
                 window.location.href = url.replace('__antiqueid__', antiqueId);
             });
 
+
+            //Initialise Main Table
             var carouselIndex = 1;
-            //initialise main table
             var table = $("#antiqueTable").DataTable({
                 "language": {
                     "info": "Showing _START_ to _END_ of _TOTAL_ antiques",
@@ -88,7 +89,7 @@
                         data: "Id",
                         render: function (data, type, antique) {
 
-                            if (antique.PhotoPaths != null) {
+                            if (antique.PhotoPaths != null && antique.PhotoPaths.length > 0) {
                                 var output = '';
                                 for (let i = 0; i < antique.PhotoPaths.length; i++) {
                                     if (i == 0) {

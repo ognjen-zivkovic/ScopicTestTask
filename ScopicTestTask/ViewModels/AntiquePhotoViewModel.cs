@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ScopicTestTask.Models.ViewModels
 {
-    public class AntiquePhotoDTO
+    public class AntiquePhotoViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
