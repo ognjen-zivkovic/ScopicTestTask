@@ -1,6 +1,4 @@
 ﻿
-
-
 table.dataTable thead th {
     background: transparent !important;
     white-space: nowrap;
@@ -48,14 +46,6 @@ table.dataTable thead .sorting_desc_disabled:after {
 }
 
 
-
-
-
-
-
-
-
-
 /*stops the datatable from auto setting width*/
 table {
     table-layout: fixed;
@@ -97,7 +87,7 @@ table {
     width: 100%;
     height: calc(2.25rem - 3px)
 }
-/* PAGINATIN */
+
 .pagination > .active > a,
 .pagination > .active > span,
 .pagination > .active > a:hover,

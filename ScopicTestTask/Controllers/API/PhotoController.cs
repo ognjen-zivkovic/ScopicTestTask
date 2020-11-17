@@ -5,11 +5,10 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
-using ScopicTestTask.Models.ViewModels;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ScopicTestTask.Controllers.API
 {
@@ -25,25 +24,22 @@ namespace ScopicTestTask.Controllers.API
             _context = context;
         }
 
-
         public class FileUploadAPI
         {
             public IList<IFormFile> photos { get; set; }
             public int AntiqueId { get; set; }
         }
 
-
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             List<Photo> photos = new List<Photo>();
-            photos = _context.Photos.Where(p=>p.AntiqueId == id).ToList();
+            photos = _context.Photos.Where(p => p.AntiqueId == id).ToList();
             return Ok(photos);
         }
 
 
-
-
+        [CustomAuthorize(Role = "All", Api = true)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -54,6 +50,7 @@ namespace ScopicTestTask.Controllers.API
             return Ok("Photo successfully deleted");
         }
 
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpPost]
         public string Post([FromForm] FileUploadAPI objFile)
         {
@@ -80,7 +77,7 @@ namespace ScopicTestTask.Controllers.API
                         _context.Add(newPhoto);
                         _context.SaveChanges();
                     }
-                    
+
                     return "Photos successfully added";
                 }
                 else

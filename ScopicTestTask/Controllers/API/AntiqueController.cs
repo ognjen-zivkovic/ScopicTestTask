@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
 using ScopicTestTask.Models;
 using ScopicTestTask.Models.ViewModels;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ScopicTestTask.Controllers.API
 {
@@ -25,6 +25,7 @@ namespace ScopicTestTask.Controllers.API
             _environment = environment;
         }
 
+        [CustomAuthorize(Role = "user", Api = true)]
         [HttpGet("ClientGetAntiqueById/{id}")]
         public IActionResult ClientGetAntiqueById(int id)
         {
@@ -40,12 +41,12 @@ namespace ScopicTestTask.Controllers.API
             return Ok(model);
         }
 
-        //[CustomAuthorize(Role = "admin")]
+        [CustomAuthorize(Role = "user", Api = true)]
         [HttpGet("ClientGetAllAntiques")]
         public IActionResult ClientGetAllAntiques()
         {
             DateTime localDate = DateTime.Now;
-            List<Antique> antiques = _context.Antiques.Where(a => a.BidStartTime <= localDate).ToList();
+            List<Antique> antiques = _context.Antiques.Where(a => a.BidStartTime <= localDate && a.BidEndTime >= localDate).ToList();
             List<HomePageViewModel> dtoList = new List<HomePageViewModel>();
             HomePageViewModel temp = null;
             foreach (Antique antique in antiques)
@@ -74,7 +75,7 @@ namespace ScopicTestTask.Controllers.API
         }
 
 
-        //[CustomAuthorize(Role = "admin")]
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpGet("GetAllAntiques")]
         public IActionResult GetAllAntiques()
         {
@@ -98,7 +99,7 @@ namespace ScopicTestTask.Controllers.API
             }
             return Ok(dtoList);
         }
-
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -106,42 +107,64 @@ namespace ScopicTestTask.Controllers.API
             return Ok(antique);
         }
 
+        private bool validate(AntiqueDTO antiqueDto)
+        {
+            if (antiqueDto == null || string.IsNullOrEmpty(antiqueDto.Name) ||
+                string.IsNullOrEmpty(antiqueDto.Description) ||
+                string.IsNullOrEmpty(antiqueDto.BidStartTime) ||
+                string.IsNullOrEmpty(antiqueDto.BidEndTime)
+               )
+            {
+                return false;
+            }
+            return true;
+        }
 
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpPost("AddAntique")]
         public IActionResult AddAntique([FromBody] AntiqueDTO antiqueDto)
         {
-            Antique newAntique = new Antique();
-            newAntique.Name = antiqueDto.Name;
-            newAntique.Description = antiqueDto.Description;
-            newAntique.BasePrice = Convert.ToDecimal(antiqueDto.BasePrice);
-            newAntique.CurrentBid = 0;
-            string format = "d MMMM yyyy hh:mm tt";
-            newAntique.BidStartTime = DateTime.ParseExact(antiqueDto.BidStartTime, format, CultureInfo.InvariantCulture);
-            newAntique.BidEndTime = DateTime.ParseExact(antiqueDto.BidEndTime, format, CultureInfo.InvariantCulture);
-            _context.Add(newAntique);
-            _context.SaveChanges();
-            int antiqueId = _context.Antiques.OrderByDescending(a => a.Id).Select(a => a.Id).FirstOrDefault();
-            return Ok(antiqueId);
+            if (validate(antiqueDto))
+            {
+                Antique newAntique = new Antique();
+                newAntique.Name = antiqueDto.Name;
+                newAntique.Description = antiqueDto.Description;
+                newAntique.BasePrice = Convert.ToDecimal(antiqueDto.BasePrice);
+                newAntique.CurrentBid = 0;
+                string format = "d MMMM yyyy hh:mm tt";
+                newAntique.BidStartTime = DateTime.ParseExact(antiqueDto.BidStartTime, format, CultureInfo.InvariantCulture);
+                newAntique.BidEndTime = DateTime.ParseExact(antiqueDto.BidEndTime, format, CultureInfo.InvariantCulture);
+                _context.Add(newAntique);
+                _context.SaveChanges();
+                int antiqueId = _context.Antiques.OrderByDescending(a => a.Id).Select(a => a.Id).FirstOrDefault();
+                return Ok(antiqueId);
+            }
+            return StatusCode(1);
         }
 
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] AntiqueDTO antiqueDto)
         {
-            Antique toUpdate = _context.Antiques.Where(a => a.Id == id).SingleOrDefault();
-            toUpdate.Name = antiqueDto.Name;
-            toUpdate.Description = antiqueDto.Description;
-            toUpdate.BasePrice = Convert.ToDecimal(antiqueDto.BasePrice);
+            if (validate(antiqueDto))
+            {
+                Antique toUpdate = _context.Antiques.Where(a => a.Id == id).SingleOrDefault();
+                toUpdate.Name = antiqueDto.Name;
+                toUpdate.Description = antiqueDto.Description;
+                toUpdate.BasePrice = Convert.ToDecimal(antiqueDto.BasePrice);
 
-            string format = "yyyy/M/d H:mm";
-            toUpdate.BidStartTime = DateTime.ParseExact(antiqueDto.BidStartTime, format, CultureInfo.InvariantCulture);
-            toUpdate.BidEndTime = DateTime.ParseExact(antiqueDto.BidEndTime, format, CultureInfo.InvariantCulture);
+                string format = "yyyy/M/d H:mm";
+                toUpdate.BidStartTime = DateTime.ParseExact(antiqueDto.BidStartTime, format, CultureInfo.InvariantCulture);
+                toUpdate.BidEndTime = DateTime.ParseExact(antiqueDto.BidEndTime, format, CultureInfo.InvariantCulture);
 
-            _context.Update(toUpdate);
-            _context.SaveChanges();
-            return Ok("Antique updated successfully");
+                _context.Update(toUpdate);
+                _context.SaveChanges();
+                return Ok("Antique updated successfully");
+            }
+            return StatusCode(1);
         }
 
-
+        [CustomAuthorize(Role = "admin", Api = true)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -10,28 +10,37 @@ namespace ScopicTestTask.CustomAuthentication
     public class CustomAuthorize : ActionFilterAttribute
     {
         public string Role { get; set; }
+
+        public bool Api { get; set; }
         public static void SetSession(User user)
         {
             if (user.UserName == "admin")
                 AppContext.Current.Session.SetString("admin", user.UserName);
             else
                 AppContext.Current.Session.SetString("user", user.UserName);
+
+            AppContext.Current.Session.SetString("All", user.UserName);
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
             if (AppContext.Current.Session.GetString(Role) == null)
             {
-                context.Result =
-                 new RedirectToRouteResult(new RouteValueDictionary
-                          {
+                if (Api == false)
+                {
+                    context.Result =
+                    new RedirectToRouteResult(new RouteValueDictionary
+                         {
                                { "action", "Login" },
                              { "controller", "Home" }
-                           });
-                return;
-                //context.Result = new ForbidResult();
-
+                          });
+                    return;
+                }
+                else
+                {
+                    context.Result = new StatusCodeResult(401);
+                    return;
+                }
             }
         }
     }

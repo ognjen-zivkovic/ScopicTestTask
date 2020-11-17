@@ -6,10 +6,10 @@
     <title>AdminPanel</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- Add local styles, mostly for plugins css file -->
     @if (IsSectionDefined("Styles"))
     {
-@RenderSection("Styles", required: false)}
+     @RenderSection("Styles", required: false)
+    }
 
     <link rel="stylesheet" href="~/lib/simplepicker-master/dist/simplepicker.css" />
     <link rel="stylesheet" href="~/lib/toastr/toastr.css" />
@@ -20,16 +20,14 @@
 <body>
 
     <!-- Wrapper-->
-    <div id="wrapper" class="@*@Html.PageClass()*@">
+    <div id="wrapper">
 
         <!-- Sidebar -->
         <partial name="_Sidebar" />
 
         <!-- Page wraper -->
-        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+        <div id="page-wrapper" class="gray-bg page-wrapper">
 
-            <!-- Top Navbar -->
-            @*<partial name="_TopNavbar" />*@
 
             <!-- Main view  -->
             @RenderBody()
@@ -40,7 +38,6 @@
         </div>
         <!-- End page wrapper-->
 
-
     </div>
     <!-- End wrapper-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -48,7 +45,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/simplepicker-master/dist/simplepicker.js"></script>
-  
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

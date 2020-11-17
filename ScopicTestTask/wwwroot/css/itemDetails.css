@@ -7,8 +7,6 @@
     src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg') format('svg');
 }
 
-
-
 div.dataTables_wrapper div.dataTables_filter input {
     width: 77% !important;
 }
@@ -21,7 +19,7 @@ div.dataTables_wrapper div.dataTables_filter input {
     width: 25%;
     float: right;
 }
-/* general styling */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -72,25 +70,6 @@ li span {
 .emoji {
     padding: 0 .25rem;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 h1,
 h2,
@@ -375,46 +354,6 @@ _:future {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 body {
     background-color: #f7f7f7;
 }
@@ -484,7 +423,6 @@ a.single-product-area {
 }
 
 
-
 ol {
     margin: 0;
 }
@@ -498,7 +436,6 @@ img {
     max-width: 100%;
 }
 
-/* Spacing */
 
 .mb-15 {
     margin-bottom: 15px !important;
@@ -508,23 +445,12 @@ img {
     margin-bottom: 50px !important;
 }
 
-/* Height */
 
-/* Section Padding */
 .section-padding-100 {
     padding-top: 100px;
     padding-bottom: 100px;
 }
 
-/* Section Heading */
-
-/* Miscellaneous */
-
-
-
-/* ScrollUp */
-
-/* Essence Button */
 .amado-btn {
     display: inline-block;
     min-width: 160px;
@@ -545,9 +471,7 @@ img {
         background-color: #131212;
     }
 
-/* :: 4.0 Search Wrapper Area CSS */
 
-/* :: 5.0 Welcome Area CSS */
 .main-content-wrapper {
     position: relative;
     z-index: 1;

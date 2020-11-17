@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using ScopicTestTask.CustomAuthentication;
 using ScopicTestTask.Data;
+using ScopicTestTask.Hubs;
 
 namespace ScopicTestTask
 {
@@ -31,6 +32,7 @@ namespace ScopicTestTask
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             services.Configure<RazorViewEngineOptions>(o =>
             {
                 o.ViewLocationFormats.Clear();
@@ -44,8 +46,6 @@ namespace ScopicTestTask
             });
             services.AddScoped<CustomAuthentication.CustomAuthorize>();
             services.AddControllersWithViews();
-            /* services.AddMemoryCache();
-             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();*/
             services.Configure<CookiePolicyOptions>(options => {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -83,7 +83,8 @@ namespace ScopicTestTask
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapHub<BidAmountHub>("/bidamounthub");
             });
 
         

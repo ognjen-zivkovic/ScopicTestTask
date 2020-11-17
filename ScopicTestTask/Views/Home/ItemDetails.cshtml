@@ -1,5 +1,6 @@
 ﻿@model int
 
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -9,18 +10,10 @@
 
                     <div class="row">
                         <div class="col-md-5">
-
-
                             <div class="antique-images">
-
-                                <div>
-                                    <div class="image">
-                                        <img src="~/AntiquePhotos/antique1.jpeg" />
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
+                        <input type="hidden" id="antiqueIdInput" value="@Model" />
                         <div class="col-md-7 itemDetails">
 
                             <h2 class="font-bold m-b-xs antiqueName">
@@ -102,147 +95,7 @@
         <script src="~/lib/dataTables/datatables.min.js"></script>
         <script src="~/lib/dataTables/dataTables.bootstrap4.min.js"></script>
         <script src="~/lib/toastr/toastr.min.js"></script>
-
-        <script>
-            $(document).ready(function () {
-
-
-                function initialiseTouchSpin(value) {
-                    $("input[name = 'demo1']").TouchSpin({
-                        initval: value + 1,
-                        max: 1000000000,
-                        min: value + 1,
-                        buttondown_class: 'btn btn-white',
-                        buttonup_class: 'btn btn-white'
-
-                    });
-                }
-            function initialiseBidHistoryTable(antiqueId) {
-                var table = $("#bidHistoryTable").DataTable({
-                    destroy: true,
-                    pageLength: 10,
-                    ajax: {
-                        url: "/api/BidHistory/"+antiqueId,
-                        dataSrc: ""
-                    },
-                    columns: [
-                        {
-                            data: "BidTime",
-                            render: function (data) {
-
-                                var date = new Date(data);
-                                var year = date.getFullYear();
-                                var month = date.getMonth() + 1;
-                                var day = date.getDate();
-                                var hour = date.getHours();
-                                var minute = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-                                return year + "/" + month + "/" + day + " " + hour + ":" + minute;
-                            }
-                        },
-                        {
-                            data:"BidAmount"
-                        }
-                    ]
-                });
-
-            }
-
-
-            $("#historyBtn").click(function () {
-                var antiqueId = $(this).data("antiqueid");
-                $('#bidHistory-form').modal('toggle');
-                initialiseBidHistoryTable(antiqueId);
-            });
-
-
-
-
-
-
-
-            $("#submitBtn").click(function () {
-                var data = {
-                    AntiqueId: parseInt($(this).data("antiqueid")),
-                    BidAmount: parseInt($("#touchSpin").val())
-                };
-                $.ajax({
-                    url: '/api/BidHistory/',
-                    type: 'POST',
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        toastr.success("Bid placed successfully");
-                        $(".product-main-price").html('$' + data + ',00 <small class="text-muted">Current Highest Bid</small>')
-                        $("input[name = 'demo1']").trigger('touchspin.destroy');
-                        initialiseTouchSpin(data);
-                    },
-                    error: function () {
-                        toastr.warning("Your bid is already the highest one")
-                    }
-                });
-            });
-
-
-            function countDownTimer(BidEnd) {
-                const second = 1000,
-                    minute = second * 60,
-                    hour = minute * 60,
-                    day = hour * 24;
-
-                let countDown = new Date(BidEnd).getTime(),
-                    x = setInterval(function () {
-
-                        let now = new Date().getTime(),
-                            distance = countDown - now;
-
-                        $("#days").html(Math.floor(distance / (day))),
-                            $("#hours").html(Math.floor((distance % (day)) / (hour))),
-                            $("#minutes").html(Math.floor((distance % (hour)) / (minute))),
-                            $("#seconds").html(Math.floor((distance % (minute)) / second));
-
-                    }, 0)
-            }
-
-            var antiqueId = @Model;
-            var carouselIndex = 1;
-            $.ajax({
-                url: '/api/Antique/ClientGetAntiqueById/' + antiqueId,
-                type: 'GET',
-                contentType: "application/json;charset=utf-8",
-                success: function (antique) {
-                    var output = '';
-                    if (antique.PhotoPaths != null) {
-
-                        for (let i = 0; i < antique.PhotoPaths.length; i++) {
-                            $(".antique-images").append(`<div>
-                                                         <div class="image">
-                                                         <img src='`+ antique.PhotoPaths[i] + `'></img>
-                                                         </div>
-                                                         </div>`);
-                        }
-                    }
-                    else {
-                        return "<img src='/images/antiqueDefaultImage.jpg' height='40px' width='40px' />";
-                    }
-                    var price = antique.CurrentBid == 0 ? antique.BasePrice : antique.CurrentBid;
-                    (antique.CurrentBid == 0 ? $(".product-main-price").html('$' + antique.BasePrice + ',00 <small class="text-muted">Current Highest Bid</small>') : $(".product-main-price").html('$' + antique.CurrentBid + ',00 <small class="text-muted">Current Highest Bid</small>'))
-                    $(".antiqueName").html(antique.Name);
-                    $(".descriptionBox").html(antique.Description);
-                    $('.antique-images').slick({
-                        dots: true
-                    });
-                    countDownTimer(antique.BidEnd);
-
-                    initialiseTouchSpin(price);
-                    $("#touchSpin").removeClass("form-control");
-
-                    $("#submitBtn").data("antiqueid", antique.Id);
-                    $("#historyBtn").data("antiqueid", antique.Id);
-                }
-
-            });
-        });
-
-
-        </script>
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/itemDetailsScripts.js"></script>
+        <script src="~/js/bidSignalR.js"></script>
     }
