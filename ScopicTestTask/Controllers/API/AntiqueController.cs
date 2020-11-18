@@ -167,9 +167,10 @@ namespace ScopicTestTask.Controllers.API
         [CustomAuthorize(Role = "admin", Api = true)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {
+        { 
             Antique toDelete = _context.Antiques.Where(a => a.Id == id).SingleOrDefault();
             List<Photo> photos = _context.Photos.Where(p => p.AntiqueId == id).ToList();
+            List<BidHistory> histories = _context.BidHistories.Where(b=>b.AntiqueId == toDelete.Id).ToList();
             if (photos != null)
             {
                 foreach (Photo photo in photos)
@@ -179,6 +180,16 @@ namespace ScopicTestTask.Controllers.API
                     _context.SaveChanges();
                 }
             }
+            //deleting corresponding bid histories
+            if (histories != null)
+            {
+                foreach (BidHistory history in histories)
+                {
+                    _context.Remove(history);
+                    _context.SaveChanges();
+                }
+            }
+
             _context.Remove(toDelete);
             _context.SaveChanges();
 
